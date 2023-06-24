@@ -141,6 +141,12 @@ app.get("/dashboard/hook/:hookId", loginRequiredMiddleware, async (req, res) => 
     })
 });
 
+app.get("/api/gethook/:hookId", loginRequiredMiddleware, async (req, res) => {
+    const hookId = req.params.hookId;
+    const hookData = await fetchHook(hookId);
+    return res.json(hookData);
+});
+
 app.post("/dashboard/newhook", loginRequiredMiddleware, async (req, res) => {
     const user = await fetchUser(req);
     const hook = await newHook(user.usernumber);
