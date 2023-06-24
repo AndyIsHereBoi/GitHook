@@ -1,0 +1,13 @@
+{
+    "sendToUrl": "http://localhost:8080/endpoint",
+    "customName": "something",
+    "method": "POST",
+    "headers": {
+        "header-name": "header-field",
+        "Authorization": "some user input field"
+    },
+    "body": {
+        "body-name": "body-field",
+        "body-field": "body-text"
+    }
+}

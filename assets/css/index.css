@@ -1,0 +1,219 @@
+@import url("https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter+Tight:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background: none;
+}
+
+:focus-visible {
+  outline: none;
+}
+
+:root {
+  --primary-color: #262931;
+  --secondary-color: #121418;
+  --tertiary-color: #0169fe;
+}
+
+body {
+  font-family: "Inter Tight", sans-serif;
+  background: var(--primary-color);
+}
+
+.wrapper {
+  display: flex;
+}
+
+#top-nav {
+  background: white;
+  color: black;
+}
+
+#body {
+  margin-left: 10vmin;
+  width: 100%;
+}
+
+.sec-hr {
+  width: 50px;
+  height: 1px;
+  background: var(--dark);
+  transform: translateY(-20px);
+  margin-bottom: 10px;
+}
+
+#home {
+  background: url(../imgs/bg.jpg);
+  background-size: cover;
+  /* background: rgb(2, 16, 39);
+  background: -moz-radial-gradient(
+    circle,
+    rgba(2, 16, 39, 1) 19%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  background: -webkit-radial-gradient(
+    circle,
+    rgba(2, 16, 39, 1) 19%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  background: radial-gradient(
+    circle,
+    rgba(2, 16, 39, 1) 19%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#021027",endColorstr="#000000",GradientType=1); */
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  padding: 13px 0;
+  width: 30%;
+  background: var(--tertiary-color);
+  border: none;
+  color: rgb(201, 201, 194);
+  font-family: inherit;
+  font-size: 20px;
+  margin: 20px auto;
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+button:hover {
+  filter: brightness(50%);
+  transform: translateY(-3px);
+}
+
+.sec-head {
+  font-size: 10vmin;
+  text-align: center;
+  padding-bottom: 40px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+#nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background: var(--secondary-color);
+  height: 100vh;
+  max-height: 100vh;
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px;
+}
+
+.nav-logo img {
+  width: 9vmin;
+  border-radius: 100%;
+  padding: 5px;
+}
+
+.links {
+  display: flex;
+  height: inherit;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.navlinks {
+  text-align: center;
+  font-size: 4vmin;
+  list-style-type: none;
+  margin: 3vmin 0;
+}
+
+.navlinks a {
+  text-decoration: none;
+  color: rgb(201, 201, 194);
+  position: relative;
+}
+
+.navlinks a p {
+  transition: 0.5s;
+  background: var(--dark);
+  z-index: 1;
+  font-size: 0;
+}
+
+.navlinks:hover .navtxt {
+  font-size: 2vmin;
+}
+
+@media only screen and (max-width: 850px) {
+  #nav {
+    flex-direction: row;
+    height: max-content;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  .nav-logo {
+    padding-right: 2vmin;
+    display: flex;
+  }
+  .nav-logo img {
+    width: 15vmin;
+  }
+  .links {
+    flex-direction: row;
+  }
+  .navlinks {
+    margin: 0 3vmin;
+    font-size: 6vmin;
+  }
+  .navhr {
+    height: 5vmin;
+    width: 0.5px;
+    background-color: white;
+    margin-right: 1vmin;
+  }
+  #body {
+    margin-top: 20vmin;
+    margin-left: 0;
+  }
+}
+#topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--secondary-color);
+  padding: 20px 40px;
+  color: rgb(201, 201, 194);
+  font-size: 20px;
+  /* font-weight: ; */
+}

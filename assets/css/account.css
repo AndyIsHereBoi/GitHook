@@ -1,0 +1,76 @@
+#account-info {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+  padding: 100px;
+  gap: 50px;
+  flex: 1;
+}
+
+.account-card {
+  width: 500px;
+  text-align: center;
+  padding: 20px;
+  color: rgb(201, 201, 194);
+  background: var(--secondary-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.acc-head {
+  font-size: 25px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.account-card hr {
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
+.acc-info {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: stretch;
+}
+
+.acc-info label {
+  margin-bottom: 10px;
+}
+
+.acc-info input {
+  padding: 5px;
+  background: var(--primary-color);
+  border: none;
+  color: rgb(201, 201, 194);
+  width: 80%;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+.acc-info input::placeholder {
+  font-family: inherit;
+}
+
+.email-settings {
+  display: flex;
+  margin: 20px 0;
+}
+
+.email-settings input {
+  width: auto !important;
+  margin: 0 10px;
+}
+
+@media only screen and (max-width: 560px) {
+  .acc-info input {
+    width: 300px;
+  }
+  .email-settings {
+    width: 300px;
+  }
+}

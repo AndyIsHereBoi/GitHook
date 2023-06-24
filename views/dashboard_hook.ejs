@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andy</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="/assets/css/index.css">
+    <link rel="stylesheet" href="/assets/css/status.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.3.0/css/all.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <div id="nav">
+            <div class="nav-logo">
+                <img src="/assets/img/logo.png" alt="">
+            </div>
+            <div class="navhr"></div>
+            <div class="links">
+                <li class="navlinks">
+                    <a href="./index.html">
+                        <i class="fa-thin fa-user"></i>
+                        <p class="navtxt">ACCOUNT</p>
+                    </a>
+                </li>
+                <li class="navlinks">
+                    <a href="./url.html">
+                        <i class="fa-thin fa-link"></i>
+                        <p class="navtxt">URL</p>
+                    </a>
+                </li>
+                <li class="navlinks">
+                    <a href="./status.html">
+                        <i class="fa-thin fa-cloud"></i>
+                        <p class="navtxt">STATUS</p>
+                    </a>
+                </li>
+            </div>
+        </div>
+        <div id="body">
+            <div id="topnav">
+                <div id="top-head">STATUS</div>
+                <div id="top-user"><i class="fa-solid fa-user"></i> USER</div>
+            </div>
+            <div id="statustab-add">
+                <div>
+                    <div id="method-select">
+                        <div class="dropdown">
+                            <div class="select">
+                              <span>CHOOSE</span>
+                              <i class="fa fa-chevron-left"></i>
+                            </div>
+                            <input type="hidden" name="gender">
+                            <ul class="dropdown-menu">
+                              <li id="post">POST</li>
+                              <li id="get">GET</li>
+                              <li id="request">REQUEST</li>
+                              <li id="patch">PATCH</li>
+                            </ul>
+                          </div>
+                    </div>
+                    <div id="name-url">
+                        <input type="text" placeholder="Name">
+                        <input type="text" placeholder="URL">
+                    </div>
+                </div>
+                <form id="my-form">
+                    <!-- form fields go here -->
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+            <div id="status-tables">
+                <div class="tables">
+                    <div class="table-head">
+                        <h1>Body <i class="fa-solid fa-plus fa-plus-1"></i></h1>
+                        <hr>
+                    </div>
+                    <table class="status-tab body-table">
+                        <tbody id="body-tab" class="input-container">
+                            <tr>
+                                <td>
+                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
+                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
+                                </td>
+                                <td><i class="fa fa-trash"></i></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
+                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
+                                </td>
+                                <td><i class="fa fa-trash"></i></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
+                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
+                                </td>
+                                <td><i class="fa fa-trash"></i></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <div class="tables">
+                    <div class="table-head">
+                        <h1>Header <i class="fa-solid fa-plus fa-plus-2"></i></h1>
+                        <hr>
+                    </div>
+                    <table class="status-tab header-table">
+                        <tbody id="header-tab" class="input-container">
+                            <tr>
+                                <td>
+                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
+                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
+                                </td>
+                                <td><i class="fa fa-trash"></i></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
+                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
+                                </td>
+                                <td><i class="fa fa-trash"></i></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
+                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
+                                </td>
+                                <td><i class="fa fa-trash"></i></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <script>
+        const newRow = `
+        <tr>
+          <td>
+            <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
+            <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
+          </td>
+          <td><i class="fa fa-trash"></i></td>
+        </tr>
+      `;
+        // Add a new row when the plus icon is clicked
+        $(".fa-plus-1").on("click", function () {
+            $("#body-tab").append(newRow);
+
+            // Attach event listener to the newly added row
+            const trashIcon = $(".fa-trash").last();
+            trashIcon.on("click", function () {
+                $(this).parent().parent().remove();
+            });
+        });
+
+
+        $(".fa-plus-2").on("click", function () {
+            $("#header-tab").append(newRow);
+
+            // Attach event listener to the newly added row
+            const trashIcon = $(".fa-trash").last();
+            trashIcon.on("click", function () {
+                $(this).parent().parent().remove();
+            });
+        });
+
+        // Delete a row when the dustbin icon is clicked
+        $(document).on("click", ".fa-trash", function () {
+            $(this).parent().parent().remove();
+        });
+
+        // Handle method selection
+    $(".dropdown-menu li").on("click", function () {
+        const selectedMethod = $(this).attr("id");
+        const methodText = $(this).text();
+        $("#method-select .select span").text(methodText);
+        $("#method-select .select input[name='gender']").val(selectedMethod);
+    });
+
+    // Handle form submission
+    $("#my-form").on("submit", function (e) {
+        e.preventDefault(); // Prevent default form submission behavior
+
+        // Collect form data
+        const method = $("#method-select .select span").text().trim();
+        const name = $("#name-url input[type='text']").eq(0).val().trim();
+        const url = $("#name-url input[type='text']").eq(1).val().trim();
+
+        // Collect body data
+        const body = {};
+        $("#body-tab tr").each(function () {
+            const name = $(this).find(".name-table").val().trim();
+            const value = $(this).find(".value-table").val().trim();
+            if (name && value) {
+                body[name] = value;
+            }
+        });
+
+        // Collect header data
+        const headerData = [];
+        $("#header-tab tr").each(function () {
+            const name = $(this).find(".name-table").val().trim();
+            const value = $(this).find(".value-table").val().trim();
+            if (name && value) {
+                headerData.push({ name, value });
+            }
+        });
+
+        var reqFinalBody = JSON.stringify({
+                sendToUrl: url,
+                customName: name,
+                method: method,
+                headers: headerData.reduce((headers, { name, value }) => {
+                                headers[name] = value;
+                                return headers;
+                            }, {}),
+                body: body
+            });
+
+        console.log("sending", reqFinalBody);
+
+        // Make Fetch API request to the API
+        fetch("FORM API HERE", {
+            method: "POST",
+            body: reqFinalBody,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle successful response from the API
+            console.log("API response:", data);
+        })
+        .catch(error => {
+            // Handle error response from the API
+            console.error("API error:", error);
+        });
+    });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/assets/js/index.js"></script>
+</body>
+
+</html>

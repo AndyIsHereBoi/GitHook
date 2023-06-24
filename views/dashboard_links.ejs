@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andy</title>
+
+    <link rel="stylesheet" href="/assets/css/index.css">
+    <link rel="stylesheet" href="/assets/css/links.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.3.0/css/all.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <div id="nav">
+            <div class="nav-logo">
+                <img src="/assets/img/logo.png" alt="">
+            </div>
+            <div class="navhr"></div>
+            <div class="links">
+                <li class="navlinks">
+                    <a href="/dashboard/account">
+                        <i class="fa-thin fa-user"></i>
+                        <p class="navtxt">ACCOUNT</p>
+                    </a>
+                </li>
+                <li class="navlinks">
+                    <a href="/dashboard/links">
+                        <i class="fa-thin fa-link"></i>
+                        <p class="navtxt">URL</p>
+                    </a>
+                </li>
+                <li class="navlinks">
+                    <a href="/dashboard/status">
+                        <i class="fa-thin fa-cloud"></i>
+                        <p class="navtxt">STATUS</p>
+                    </a>
+                </li>
+            </div>
+        </div>
+        <div id="body">
+            <div id="topnav">
+                <div id="top-head">URL</div>
+                <div id="top-user"><i class="fa-solid fa-user"></i> <%= user.username %></div>
+            </div>
+            <div class="urls">
+                <h1>Links</h1>
+                <div class="tbl-header">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Name</th>
+                                <th style="text-align: center;">Last Changed</th>
+                                <th style="text-align: center;">Runs</th>
+                                <th style="text-align: center;">Edit</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>    
+                <div class="tbl-content">
+                    <table cellpadding="0" cellspacing="0" border="0">
+                        <tbody>
+                            <% for (var i = 0; i < hookList.length; i++) { %>
+                            <tr>
+                                <td><%= hookList[i].customName %></td>
+                                <td style="text-align: center;"><%= hookList[i].lastEditedAt %></td>
+                                <td style="text-align: center;"><%= hookList[i].timesRan %></td>
+                                <td style="text-align: center;">
+                                    <a href="/dashboard/hook/<%= hookList[i].hookId %>">
+                                        <button class="edit-btn">Edit</button>
+                                    </a>
+                                </td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>            
+            </div>
+        </div>
+    </div>
+    <script>// '.tbl-content' consumed little space for vertical scrollbar, scrollbar width depend on browser/os/platfrom. Here calculate the scollbar width .
+        $(window).on("load resize ", function () {
+            var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
+            $('.tbl-header').css({ 'padding-right': scrollWidth });
+        }).resize();</script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andy</title>
+
+    <link rel="stylesheet" href="/assets/css/index.css">
+    <link rel="stylesheet" href="/assets/css/account.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.3.0/css/all.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div id="nav">
+            <div class="nav-logo">
+                <img src="/assets/img/logo.png" alt="">
+            </div>
+            <div class="navhr"></div>
+            <div class="links">
+                <li class="navlinks">
+                    <a href="/dashboard/account">
+                        <i class="fa-thin fa-user"></i>
+                        <p class="navtxt">ACCOUNT</p>
+                    </a>
+                </li>
+                <li class="navlinks">
+                    <a href="/dashboard/links">
+                        <i class="fa-thin fa-link"></i>
+                        <p class="navtxt">URL</p>
+                    </a>
+                </li>
+                <li class="navlinks">
+                    <a href="/dashboard/status">
+                        <i class="fa-thin fa-cloud"></i>
+                        <p class="navtxt">STATUS</p>
+                    </a>
+                </li>
+            </div>
+        </div>
+        <div id="body">
+            <div id="topnav">
+                <div id="top-head">ACCOUNT</div>
+                <div id="top-user"><i class="fa-solid fa-user"></i> <%= user.username %></div>
+            </div>
+            <div id="account-info">
+                <div class="account-card">
+                    <div class="acc-head">
+                        CHANGE PASSWORD
+                    </div>
+                    <hr>
+                    <div class="acc-info">
+                        <label for="c-pass">CURRENT PASSWORD</label>
+                        <input type="text" name="c-pass">
+                        <label for="new-pass">NEW PASSWORD</label>
+                        <input type="text" name="c-pass">
+                        <label for="conf-pass">CONFIRM PASSWORD</label>
+                        <input type="text" name="c-pass">
+                        <button type="submit" class="acc-submit">SUBMIT</button>
+                    </div>
+                </div>
+                <div class="account-card" >
+                    <div class="acc-head">
+                        UPDATE EMAIL
+                    </div>
+                    <hr>
+                    <div class="acc-info">
+                        <label for="n-email">NEW EMAIL</label>
+                        <input type="text" name="n-email">
+                        <label for="udem-pass">PASSWORD</label>
+                        <input type="text" name="udem-pass">
+                        <button type="submit" class="acc-submit">SUBMIT</button>
+                    </div>
+                </div>
+                <div id="emailset-card" class="account-card">
+                    <div class="acc-head">
+                        EMAIL SETTINGS
+                    </div>
+                    <hr>
+                    <div class="acc-info">
+                        <div class="email-settings">
+                            <input type="checkbox">
+                            <p>Allow Password Reset</p>
+                        </div>
+                        <div class="email-settings">
+                            <input type="checkbox">
+                            <p>Subscribe To New Update Newsletter</p>
+                        </div>
+                        <div class="email-settings">
+                            <input type="checkbox">
+                            <p>Account Updates</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
