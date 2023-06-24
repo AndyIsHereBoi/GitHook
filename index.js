@@ -157,7 +157,7 @@ app.post("/dashboard/newhook", loginRequiredMiddleware, async (req, res) => {
     });
 });
 
-app.post("/dashboard/hook/:hookId", loginRequiredMiddleware, async (req, res) => {
+app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) => {
     const user = await fetchUser(req);
     const hook = await fetchHook(req.params.hookId);
     if(!user.usernumber == hook.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" });};
