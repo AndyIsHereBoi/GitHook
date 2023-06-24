@@ -132,9 +132,13 @@ app.post("dashboard/updateurl", loginRequiredMiddleware, async (req, res) => {
 });
 
 app.get("/dashboard/hook/:hookId", loginRequiredMiddleware, async (req, res) => {
-    // const hookId = req.params.hookId;
-    // const hookData = await fetchHook(hookId);
-    return res.render("dashboard_hook")
+    const hookId = req.params.hookId;
+    const hookData = await fetchHook(hookId);
+    const user = await fetchUser(req);
+    console.log(hookId, hookData)
+    return res.render("dashboard_hook", {
+        user: user
+    })
 });
 
 app.post("/dashboard/newhook", loginRequiredMiddleware, async (req, res) => {
