@@ -17,6 +17,7 @@ const {
     newHook,
     queryDB,
     getHooks,
+    fetchAllHooks,
 } = require('./functions');
 const app = express();
 
@@ -135,14 +136,6 @@ app.get("/dashboard/hook/:hookId", loginRequiredMiddleware, async (req, res) => 
     })
 });
 
-app.get("/api/gethook/:hookId", loginRequiredMiddleware, async (req, res) => {
-    const hookId = req.params.hookId;
-    const user = await fetchUser(req);
-    const hookData = await fetchHook(hookId);
-    
-    if(!user.usernumber == hookData.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
-    return res.json(hookData);
-});
 
 app.post("/dashboard/newhook", loginRequiredMiddleware, async (req, res) => {
     const user = await fetchUser(req);
@@ -153,6 +146,53 @@ app.post("/dashboard/newhook", loginRequiredMiddleware, async (req, res) => {
         "hook": hook.hookId
     });
 });
+
+
+app.post("/hook/:ID", async (req, res) => {
+    const hookId = req.params.ID;
+    const hookData = await fetchHook(hookId);
+    if(!hookData) return; 
+    await axios({
+        method: hookData.requestMethod,
+        url: hookData.requestUrl,
+        data: JSON.parse(hookData.requestBody),
+        headers: JSON.parse(hookData.requestHeaders)
+    }).then(async (response) => {
+        if(`${response.status}`.startsWith("2")) {
+            queryDB("UPDATE `hooks` SET timesRan` = timesRan + 1,  WHERE `hookId` = ?", [hookId]);
+            console.log("SUCCESS response.status", response.status);
+            return res.json({
+                "success": true
+            });
+        };
+    }).catch(async (error) => {
+        console.log("ERROR ", error);
+        queryDB("UPDATE `hooks` SET timesFailed` = timesFailed + 1,  WHERE `hookId` = ?", [hookId]);
+        return res.json({
+            "success": false
+        });
+    });
+});
+
+
+
+/*
+
+AFTER THIS IS ALL API ENDPOINTS
+
+*/
+
+
+
+app.get("/api/gethook/:hookId", loginRequiredMiddleware, async (req, res) => {
+    const hookId = req.params.hookId;
+    const user = await fetchUser(req);
+    const hookData = await fetchHook(hookId);
+    
+    if(!user.usernumber == hookData.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
+    return res.json(hookData);
+});
+
 
 app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) => {
     const user = await fetchUser(req);
@@ -203,28 +243,9 @@ app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) =>
 });
 
 
-app.post("/hook/:ID", async (req, res) => {
-    const hookId = req.params.ID;
-    const hookData = await fetchHook(hookId);
-    if(!hookData) return; 
-    await axios({
-        method: hookData.requestMethod,
-        url: hookData.requestUrl,
-        data: JSON.parse(hookData.requestBody),
-        headers: JSON.parse(hookData.requestHeaders)
-    }).then(async (response) => {
-        if(`${response.status}`.startsWith("2")) {
-            queryDB("UPDATE `hooks` SET timesRan` = timesRan + 1,  WHERE `hookId` = ?", [hookId]);
-            console.log("SUCCESS response.status", response.status);
-            return res.json({
-                "success": true
-            });
-        };
-    }).catch(async (error) => {
-        console.log("ERROR ", error);
-        queryDB("UPDATE `hooks` SET timesFailed` = timesFailed + 1,  WHERE `hookId` = ?", [hookId]);
-        return res.json({
-            "success": false
-        });
-    });
+app.get("/api/getallhooks", loginRequiredMiddleware, async (req, res) => {
+    const user = await fetchUser(req);
+    const allHooks = await fetchAllHooks(user.usernumber);
+    
+    return res.json(allHooks);
 });
