@@ -159,17 +159,17 @@ app.post("/hook/:ID", async (req, res) => {
         headers: JSON.parse(hookData.requestHeaders)
     }).then(async (response) => {
         if(`${response.status}`.startsWith("2")) {
-            queryDB("UPDATE `hooks` SET timesRan = timesRan + 1,  WHERE `hookId` = ?", [hookId]);
+            queryDB("UPDATE hooks SET timesRan = timesRan + 1 WHERE hookId = ?", [hookId]);
             console.log("SUCCESS response.status", response.status);
             return res.json({
                 "success": true
             });
         } else {
-            queryDB("UPDATE `hooks` SET timesFailed = timesFailed + 1,  WHERE `hookId` = ?", [hookId]);
+            queryDB("UPDATE hooks SET timesFailed = timesFailed + 1 WHERE hookId = ?", [hookId]);
         };
-    }).catch(async (error) => {
+    }).catch(function (error) {
         console.log("ERROR ", error);
-        queryDB("UPDATE `hooks` SET timesFailed = timesFailed + 1,  WHERE `hookId` = ?", [hookId]);
+        queryDB("UPDATE hooks SET timesFailed = timesFailed + 1 WHERE hookId = ?", [hookId]);
         return res.json({
             "success": false
         });
@@ -223,7 +223,7 @@ app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) =>
             });
         };
         
-        const query = await queryDB("UPDATE `hooks` SET `requestHeaders` = ?, `requestBody` = ?, `requestMethod` = ?, `customName` = ?, `requestUrl` = ?, lastEditedAt = ? WHERE `hookId` = ?", [requestHeaders, requestBody, requestMethod, customName, sanitizedUrl, Date.now(), hookId]);
+        const query = await queryDB("UPDATE `hooks` SET `requestHeaders` = ?, `requestBody` = ?, `requestMethod` = ?, `customName` = ?, `requestUrl` = ?, lastEditedAt = ? WHERE hookId = ?", [requestHeaders, requestBody, requestMethod, customName, sanitizedUrl, Date.now(), hookId]);
         
         if(query.affectedRows > 0) {
             return res.json({
