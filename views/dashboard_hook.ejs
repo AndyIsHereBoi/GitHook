@@ -67,8 +67,8 @@
                           </div>
                     </div>
                     <div id="name-url">
-                        <input type="text" placeholder="Name">
-                        <input type="text" placeholder="URL">
+                        <input id="customHookName" type="text" placeholder="Name">
+                        <input id="customHookUrl" type="text" placeholder="URL">
                     </div>
                 </div>
                 <form id="my-form">
@@ -231,14 +231,16 @@
                 headers: headerData.reduce((headers, { name, value }) => {
                                 headers[name] = value;
                                 return headers;
-                            }, {}),
+                            }, {}), 
                 body: body
             });
 
         console.log("sending", reqFinalBody);
 
         // Make Fetch API request to the API
-        fetch("FORM API HERE", {
+        const part = (window.location.href.toString()).split('/');
+        var hookId = part[part.length - 1];
+        fetch(`/api/updatehook/${hookId}`, {
             method: "POST",
             body: reqFinalBody,
             headers: {
@@ -255,6 +257,79 @@
             console.error("API error:", error);
         });
     });
+    </script>
+    <script>
+     // THIS SCRIPT UPDATES DATA ON PAGE LOAD TO POPULATE DATA FROM DATABASE
+        const part = (window.location.href.toString()).split('/');
+        var hookId = part[part.length - 1];
+        fetch(`/api/gethook/${hookId}`).then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            document.getElementById('customHookName').value = data.customName;
+            document.getElementById('customHookUrl').value = data.requestUrl;
+			
+            // this is all for dropdown
+            const dropdown = document.querySelector('#method-select ul.dropdown-menu');
+            const hiddenInput = document.querySelector('#method-select input[name=gender]');
+            const selectedOption = dropdown.querySelector('#post');
+            selectedOption.dispatchEvent(new MouseEvent('click'));
+            hiddenInput.value = selectedOption.id;
+            // end dropdown
+            
+            // DO HEADERS
+            var requestHeaders = JSON.parse(data.requestHeaders)
+            console.log(requestHeaders)
+            for (const name in requestHeaders) {
+                const content = requestHeaders[name];
+                console.log(name,content)
+                $("#header-tab").append(`
+        <tr>
+          <td>
+            <input type="text" name="name" id="Tname" class="name-table" placeholder="Name" value="${name}">
+            <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value" value="${content}"">
+          </td>
+          <td><i class="fa fa-trash"></i></td>
+        </tr>
+                                      `)
+                // Attach event listener to the newly added row
+                const trashIcon = $(".fa-trash").last();
+                trashIcon.on("click", function () {
+                    $(this).parent().parent().remove();
+                });
+            }
+            // end headers
+            
+            
+            // DO HEADERS
+            var requestBody = JSON.parse(data.requestBody)
+            for (const name in requestBody) {
+                const content = requestBody[name];
+                console.log(name,content)
+                $("#body-tab").append(`
+        <tr>
+          <td>
+            <input type="text" name="name" id="Tname" class="name-table" placeholder="Name" value="${name}">
+            <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value" value="${content}"">
+          </td>
+          <td><i class="fa fa-trash"></i></td>
+        </tr>
+                                      `)
+                // Attach event listener to the newly added row
+                const trashIcon = $(".fa-trash").last();
+                trashIcon.on("click", function () {
+                    $(this).parent().parent().remove();
+                });
+            }
+            // end body
+            
+        }).catch(function (err) {
+            console.error(err)
+            alert("There was an error fetching the hook data. Please try again later.");
+            history.back();
+        });
+        window.addEventListener('load', function () {
+            alert('loaded')
+        });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/index.js"></script>
