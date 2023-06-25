@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andy</title>
+    <title>Githook - Editing ...</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo.png"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="/assets/css/index.css">
     <link rel="stylesheet" href="/assets/css/status.css">
@@ -223,6 +224,7 @@
         }).then(function (data) {
             document.getElementById('customHookName').value = data.customName;
             document.getElementById('customHookUrl').value = data.requestUrl;
+	    document.title = `GitHook - Editing "${data.customName}"`
 			
             // this is all for dropdown
             const dropdown = document.querySelector('#method-select ul.dropdown-menu');
@@ -254,7 +256,7 @@
             // end headers
             
             
-            // DO HEADERS
+            // DO BODY
             var requestBody = JSON.parse(data.requestBody)
             for (const name in requestBody) {
                 const content = requestBody[name];
