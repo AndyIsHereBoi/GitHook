@@ -130,14 +130,14 @@
 
 .tables {
   flex: 1;
-  padding: 50px;
+  padding: 3%;
   background: var(--secondary-color);
-  margin: 80px;
+  margin: 1%;
 }
 
 .table-head h1 {
   text-transform: uppercase;
-  font-size: 35px;
+  font-size: 200%;
   display: flex;
   align-content: center;
   align-items: center;
@@ -145,7 +145,7 @@
 }
 
 .table-head h1 i {
-  font-size: 25px;
+  font-size: 100%;
 }
 
 .input-container {
@@ -212,7 +212,7 @@ background: 121418;
 .table-head hr {
   /* width: 50%; */
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 5px;
 }
 
 @media only screen and (max-width: 728px) {
