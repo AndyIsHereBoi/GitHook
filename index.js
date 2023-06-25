@@ -124,18 +124,12 @@ app.get("/dashboard/links", loginRequiredMiddleware, async (req, res) => {
     });
 });
 
-app.post("dashboard/updateurl", loginRequiredMiddleware, async (req, res) => {
-    const user = await fetchUser(req);
-    return res.render("dashboard_home", {
-        user: user
-    });
-});
-
 app.get("/dashboard/hook/:hookId", loginRequiredMiddleware, async (req, res) => {
     const hookId = req.params.hookId;
     const hookData = await fetchHook(hookId);
     const user = await fetchUser(req);
-    console.log(hookId, hookData)
+    
+    if(!user.usernumber == hookData.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
     return res.render("dashboard_hook", {
         user: user
     })
@@ -143,7 +137,10 @@ app.get("/dashboard/hook/:hookId", loginRequiredMiddleware, async (req, res) => 
 
 app.get("/api/gethook/:hookId", loginRequiredMiddleware, async (req, res) => {
     const hookId = req.params.hookId;
+    const user = await fetchUser(req);
     const hookData = await fetchHook(hookId);
+    
+    if(!user.usernumber == hookData.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
     return res.json(hookData);
 });
 
@@ -160,7 +157,7 @@ app.post("/dashboard/newhook", loginRequiredMiddleware, async (req, res) => {
 app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) => {
     const user = await fetchUser(req);
     const hook = await fetchHook(req.params.hookId);
-    if(!user.usernumber == hook.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" });};
+    if(!user.usernumber == hook.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
 
     try {
         const requestHeaders = JSON.stringify(req.body.headers);
@@ -184,7 +181,7 @@ app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) =>
             });
         };
         
-        const query = await queryDB("UPDATE `hooks` SET `requestHeaders` = ?, `requestBody` = ?, `requestMethod` = ?, `customName` = ?, `requestUrl` = ? WHERE `hookId` = ?", [requestHeaders, requestBody, requestMethod, customName, sanitizedUrl, hookId]);
+        const query = await queryDB("UPDATE `hooks` SET `requestHeaders` = ?, `requestBody` = ?, `requestMethod` = ?, `customName` = ?, `requestUrl` = ?, lastEditedAt = ? WHERE `hookId` = ?", [requestHeaders, requestBody, requestMethod, customName, sanitizedUrl, Date.now(), hookId]);
         
         if(query.affectedRows > 0) {
             return res.json({
@@ -217,6 +214,7 @@ app.post("/hook/:ID", async (req, res) => {
         headers: JSON.parse(hookData.requestHeaders)
     }).then(async (response) => {
         if(`${response.status}`.startsWith("2")) {
+            queryDB("UPDATE `hooks` SET timesRan` = timesRan + 1,  WHERE `hookId` = ?", [hookId]);
             console.log("SUCCESS response.status", response.status);
             return res.json({
                 "success": true
@@ -224,6 +222,7 @@ app.post("/hook/:ID", async (req, res) => {
         };
     }).catch(async (error) => {
         console.log("ERROR ", error);
+        queryDB("UPDATE `hooks` SET timesFailed` = timesFailed + 1,  WHERE `hookId` = ?", [hookId]);
         return res.json({
             "success": false
         });
