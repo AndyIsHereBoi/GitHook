@@ -163,15 +163,13 @@ app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) =>
     if(!user.usernumber == hook.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" });};
 
     try {
-        const requestHeaders = JSON.stringify(req.body.requestHeaders);
-        const requestBody = JSON.stringify(req.body.requestBody);
-
+        const requestHeaders = JSON.stringify(req.body.headers);
+        const requestBody = JSON.stringify(req.body.body);
         let hookId = req.params.hookId;
         let requestMethod = req.body.method.toLowerCase();
         let customName = req.body.customName;
         const requestUrl = req.body.sendToUrl; 
 
-        console.log("requestBody", req.body);
         if (requestMethod !== 'post' && requestMethod !== 'get' && requestMethod !== 'patch' && requestMethod !== 'delete') {
             requestMethod = 'post';
         }
@@ -179,9 +177,12 @@ app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) =>
         const urlRegex = /^(http|https):\/\/[^ \r\n\t\f]{1,100}$/igm;
         const sanitizedUrl = requestUrl.match(urlRegex);
         const uuidRegex = /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[1-5][a-fA-F0-9]{3}-[a-fA-F0-9]{12}$/igm;
-        if(!uuidRegex.test(hookId)){
-            hookId = '';
-        }
+        if(!hookId.match(/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[4][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/)){
+            console.log("invalid hook id,", hookId);
+            return res.json({
+                "success": false
+            });
+        };
         
         const query = await queryDB("UPDATE `hooks` SET `requestHeaders` = ?, `requestBody` = ?, `requestMethod` = ?, `customName` = ?, `requestUrl` = ? WHERE `hookId` = ?", [requestHeaders, requestBody, requestMethod, customName, sanitizedUrl, hookId]);
         
@@ -190,6 +191,7 @@ app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) =>
                 "success": true
             });
         } else {
+            console.log("no rows affected")
             return res.json({
                 "success": false
             });
@@ -207,12 +209,7 @@ app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) =>
 app.post("/hook/:ID", async (req, res) => {
     const hookId = req.params.ID;
     const hookData = await fetchHook(hookId);
-    if(!hookData) return;
-    console.log("hookData", hookData)
-    console.log(`method: ${hookData.requestMethod},
-        url: ${hookData.requestUrl},
-        data: ${JSON.parse(hookData.requestBody)},
-        headers: ${JSON.parse(hookData.requestHeaders)}`)
+    if(!hookData) return; 
     await axios({
         method: hookData.requestMethod,
         url: hookData.requestUrl,
