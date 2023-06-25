@@ -267,6 +267,12 @@ async function getHooks(userId) {
 }
 
 
+async function fetchAllHooks(userId) {
+    const query = await queryDB("SELECT hookId, customName, timesRan, lastEditedAt FROM hooks WHERE ownerNumber = ?;",  [ userId ]);
+    return query;
+}
+
+
 module.exports = {
     queryDB,
     getDate,
@@ -285,5 +291,6 @@ module.exports = {
     fetchHook,
     newHook,
     getHooks,
+    fetchAllHooks,
 }
 
