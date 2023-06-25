@@ -64,19 +64,8 @@
                 </div>    
                 <div class="tbl-content">
                     <table cellpadding="0" cellspacing="0" border="0">
-                        <tbody>
-                            <% for (var i = 0; i < hookList.length; i++) { %>
-                            <tr>
-                                <td><%= hookList[i].customName %></td>
-                                <td style="text-align: center;"><%= hookList[i].lastEditedAt %></td>
-                                <td style="text-align: center;"><%= hookList[i].timesRan %></td>
-                                <td style="text-align: center;">
-                                    <a href="/dashboard/hook/<%= hookList[i].hookId %>">
-                                        <button class="edit-btn">Edit</button>
-                                    </a>
-                                </td>
-                            </tr>
-                            <% } %>
+                        <tbody id="table-body">
+                            <!--- the table rows get rendered here --->
                         </tbody>
                     </table>
                 </div>            
@@ -87,7 +76,47 @@
         $(window).on("load resize ", function () {
             var scrollWidth = $('.tbl-content').width() - $('.tbl-content table').width();
             $('.tbl-header').css({ 'padding-right': scrollWidth });
-        }).resize();</script>
+        }).resize();
+    </script>
+    <script>
+        
+function getDate(date) {
+    const date_ob = new Date(date);
+    let dateE = ("0" + date_ob.getDate()).slice(-2);
+    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+    let year = date_ob.getFullYear();
+    let hours = date_ob.getHours();
+    let minutes = date_ob.getMinutes();
+    let seconds = date_ob.getSeconds();
+    var DateStuff = `${month}/${dateE}/${year} ${hours}:${minutes}:${seconds}`;
+    return DateStuff;
+};
+        
+        fetch("/api/getallhooks").then(function (response) {
+            return response.json();
+        }).then(function (data) {
+            data.forEach(async (hook) => {
+                document.getElementById("table-body").innerHTML += `
+                <tr>
+                    <td>${hook.customName}</td>
+                    <td style="text-align: center;">${getDate(parseInt(hook.lastEditedAt))}</td>
+                    <td style="text-align: center;">${hook.timesRan}</td>
+                    <td style="text-align: center;">
+                    <a href="/dashboard/hook/${hook.hookId}">
+                        <button class="edit-btn">Edit</button>
+                    </a>
+                    </td>
+                </tr>
+                                      `
+                
+            });
+            
+        }).catch(function (err) {
+            console.error(err)
+            alert("There was an error fetching your hooks. Please try again later.");
+            history.back();
+        });
+    </script>
 </body>
 
 </html>
