@@ -72,40 +72,18 @@
                     </div>
                 </div>
                 <form id="my-form">
-                    <!-- form fields go here -->
                     <button type="submit">Submit</button>
                 </form>
             </div>
             <div id="status-tables">
                 <div class="tables">
-                    <div class="table-head">
+                    <div class="table-head" style="padding-right:2%; padding-left 2%;">
                         <h1>Body <i class="fa-solid fa-plus fa-plus-1"></i></h1>
                         <hr>
                     </div>
                     <table class="status-tab body-table">
                         <tbody id="body-tab" class="input-container">
-                            <tr>
-                                <td>
-                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
-                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
-                                </td>
-                                <td><i class="fa fa-trash"></i></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
-                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
-                                </td>
-                                <td><i class="fa fa-trash"></i></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
-                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
-                                </td>
-                                <td><i class="fa fa-trash"></i></td>
-                            </tr>
-
+                            <!-- body fields auto placed here -->
                         </tbody>
                     </table>
 
@@ -119,28 +97,7 @@
                     </div>
                     <table class="status-tab header-table">
                         <tbody id="header-tab" class="input-container">
-                            <tr>
-                                <td>
-                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
-                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
-                                </td>
-                                <td><i class="fa fa-trash"></i></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
-                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
-                                </td>
-                                <td><i class="fa fa-trash"></i></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="text" name="name" id="Tname" class="name-table" placeholder="Name">
-                                    <input type="text" name="value" id="Tvalue" class="value-table" placeholder="Value">
-                                </td>
-                                <td><i class="fa fa-trash"></i></td>
-                            </tr>
-
+                            <!-- headers auto placed here -->
                         </tbody>
                     </table>
                 </div>
@@ -235,7 +192,6 @@
                 body: body
             });
 
-        console.log("sending", reqFinalBody);
 
         // Make Fetch API request to the API
         const part = (window.location.href.toString()).split('/');
@@ -250,7 +206,7 @@
         .then(response => response.json())
         .then(data => {
             // Handle successful response from the API
-            console.log("API response:", data);
+            
         })
         .catch(error => {
             // Handle error response from the API
@@ -278,10 +234,8 @@
             
             // DO HEADERS
             var requestHeaders = JSON.parse(data.requestHeaders)
-            console.log(requestHeaders)
             for (const name in requestHeaders) {
                 const content = requestHeaders[name];
-                console.log(name,content)
                 $("#header-tab").append(`
         <tr>
           <td>
@@ -304,7 +258,6 @@
             var requestBody = JSON.parse(data.requestBody)
             for (const name in requestBody) {
                 const content = requestBody[name];
-                console.log(name,content)
                 $("#body-tab").append(`
         <tr>
           <td>
