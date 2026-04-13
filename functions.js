@@ -247,12 +247,12 @@ async function fetchHook(hookId) {
 
 
 async function newHook(userId) {
-    const uuid = uuid();
-    const query = await queryDB("INSERT INTO hooks (hookId, ownerNumber, timesRan, timesFailed, requestHeaders, requestBody, requestMethod, lastRanAt, lastEditedAt, customName, requestUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [uuid, userId, "0", "0", "{}", {}, "post", "0", "0", "Rename me!", "https://some-url..."]);
+    const hookId = uuid();
+    const query = await queryDB("INSERT INTO hooks (hookId, ownerNumber, timesRan, timesFailed, requestHeaders, requestBody, requestMethod, lastRanAt, lastEditedAt, customName, requestUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [hookId, userId, "0", "0", "{}", {}, "post", "0", "0", "Rename me!", "https://some-url..."]);
     if(query[0].affectedRows >= 1) {
         return {
             "success": true,
-            "hookId": uuid
+            "hookId": hookId
         };
     } else {
         return {
