@@ -20,6 +20,49 @@ const {
 } = require('./functions');
 const app = express();
 
+const requestTimeoutMs = Number(config.requestTimeoutMs) || 15000;
+
+function wantsJson(req) {
+    const acceptHeader = String(req.headers.accept || "").toLowerCase();
+    return req.path.startsWith("/api/") || acceptHeader.includes("application/json") || req.xhr;
+}
+
+function sendErrorResponse(req, res, statusCode, message) {
+    if(res.headersSent) {
+        return;
+    }
+
+    if(wantsJson(req)) {
+        return res.status(statusCode).json({
+            "success": false,
+            "error": message
+        });
+    }
+
+    return res.status(statusCode).render("error", {
+        statusCode: statusCode,
+        message: message
+    });
+}
+
+function wrapAsyncHandler(handler) {
+    if(typeof handler !== "function" || handler.length > 3) {
+        return handler;
+    }
+
+    return function (req, res, next) {
+        return Promise.resolve(handler(req, res, next)).catch(next);
+    };
+}
+
+["get", "post", "put", "patch", "delete"].forEach((method) => {
+    const originalMethod = app[method].bind(app);
+    app[method] = function (path, ...handlers) {
+        const wrappedHandlers = handlers.map((handler) => wrapAsyncHandler(handler));
+        return originalMethod(path, ...wrappedHandlers);
+    };
+});
+
 
 process.on('uncaughtException', function (error) {
     console.log(error.stack);
@@ -42,6 +85,13 @@ app.use('/assets', express.static('assets'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(config.cookieSecret));
 app.use(express.json())
+app.use((req, res, next) => {
+    res.setTimeout(requestTimeoutMs, () => {
+        console.log("request timeout", req.method, req.originalUrl);
+        sendErrorResponse(req, res, 504, "Request timed out while waiting for the backend.");
+    });
+    return next();
+});
 
 app.get("/", async (req, res) => {
     res.redirect("/dashboard/account");
@@ -164,7 +214,12 @@ app.post("/dashboard/newhook", loginRequiredMiddleware, async (req, res) => {
 app.post("/hook/:ID", async (req, res) => {
     const hookId = req.params.ID;
     const hookData = await fetchHook(hookId);
-    if(!hookData) return; 
+    if(!hookData) {
+        return res.status(404).json({
+            "success": false,
+            "error": "Hook not found"
+        });
+    }
     await axios({
         method: hookData.requestMethod,
         url: hookData.requestUrl,
@@ -274,4 +329,13 @@ app.get("/api/getallhooks", loginRequiredMiddleware, async (req, res) => {
     const allHooks = await fetchAllHooks(user.usernumber);
     
     return res.json(allHooks);
+});
+
+app.use((req, res) => {
+    return sendErrorResponse(req, res, 404, "Page not found.");
+});
+
+app.use((error, req, res, next) => {
+    console.log("request error", error);
+    return sendErrorResponse(req, res, 500, "An unexpected server error occurred.");
 });

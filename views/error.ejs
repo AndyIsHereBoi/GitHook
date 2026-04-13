@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHook - Error</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo.png"/>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #15181d 0%, #1d2531 100%);
+            color: #f5f7fb;
+        }
+
+        .error-card {
+            width: min(560px, 90vw);
+            background: rgba(20, 27, 36, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 24px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+        }
+
+        .status {
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 0;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 18px;
+            color: #2fc6a2;
+            text-decoration: none;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <main class="error-card">
+        <div class="status"><%= statusCode %></div>
+        <p><%= message %></p>
+        <a href="/">Return to dashboard</a>
+    </main>
+</body>
+</html>

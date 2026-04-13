@@ -1,5 +1,6 @@
 {
     "port": 8080,
+    "requestTimeoutMs": 15000,
     "cookieSecret": "",
     "publicDomain": "",
     "db": {
