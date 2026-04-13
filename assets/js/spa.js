@@ -174,9 +174,19 @@
         row.className = "pair-row";
         row.innerHTML = `
             <input type="text" class="pair-name" placeholder="Name" value="${name || ""}">
-            <textarea class="pair-value" placeholder="Value" rows="2">${value || ""}</textarea>
+            <textarea class="pair-value" placeholder="Value" rows="1">${value || ""}</textarea>
             <button type="button" class="icon-btn remove-pair">Remove</button>
         `;
+
+        const valueField = row.querySelector(".pair-value");
+        const autoResize = function () {
+            valueField.style.height = "auto";
+            valueField.style.height = valueField.scrollHeight + "px";
+        };
+
+        valueField.addEventListener("input", autoResize);
+        autoResize();
+
         row.querySelector(".remove-pair").addEventListener("click", function () {
             row.remove();
         });

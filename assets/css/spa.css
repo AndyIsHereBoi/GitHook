@@ -148,12 +148,15 @@ body {
 
 .form-row input,
 .form-row select,
-.pair-row input {
+.form-row textarea,
+.pair-row input,
+.pair-row textarea {
   border: 1px solid var(--border-soft);
   border-radius: 10px;
   background: rgba(17, 22, 30, 0.9);
   color: var(--text-main);
   padding: 10px 11px;
+  font: inherit;
 }
 
 .split {
@@ -193,7 +196,8 @@ body {
 }
 
 .pair-value {
-  resize: vertical;
+  resize: none;
+  overflow-y: hidden;
   overflow-wrap: anywhere;
   word-break: break-word;
   white-space: pre-wrap;
