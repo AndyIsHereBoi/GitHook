@@ -1,6 +1,6 @@
 const config = require('./config.json');
 const mysql = require('mysql');
-const { uuid } = require('uuidv4');
+const { randomUUID } = require('crypto');
 const bcrypt = require ("bcrypt");
 const Recaptcha = require('google-recaptcha');
 const captchaEnabled = !!(config.recaptcha && config.recaptcha.enabled);
@@ -247,9 +247,9 @@ async function fetchHook(hookId) {
 
 
 async function newHook(userId) {
-    const hookId = uuid();
-    const query = await queryDB("INSERT INTO hooks (hookId, ownerNumber, timesRan, timesFailed, requestHeaders, requestBody, requestMethod, lastRanAt, lastEditedAt, customName, requestUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [hookId, userId, "0", "0", "{}", {}, "post", "0", "0", "Rename me!", "https://some-url..."]);
-    if(query[0].affectedRows >= 1) {
+    const hookId = randomUUID();
+    const query = await queryDB("INSERT INTO hooks (hookId, ownerNumber, timesRan, timesFailed, requestHeaders, requestBody, requestMethod, lastRanAt, lastEditedAt, customName, requestUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [hookId, userId, "0", "0", "{}", "{}", "post", "0", "0", "Rename me!", "https://some-url..."]);
+    if(query.affectedRows >= 1) {
         return {
             "success": true,
             "hookId": hookId
