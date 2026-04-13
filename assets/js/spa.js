@@ -185,9 +185,11 @@
         };
 
         valueField.addEventListener("input", autoResize);
-        autoResize();
+        window.requestAnimationFrame(autoResize);
+        window.addEventListener("resize", autoResize);
 
         row.querySelector(".remove-pair").addEventListener("click", function () {
+            window.removeEventListener("resize", autoResize);
             row.remove();
         });
         return row;
