@@ -174,7 +174,7 @@
         row.className = "pair-row";
         row.innerHTML = `
             <input type="text" class="pair-name" placeholder="Name" value="${name || ""}">
-            <input type="text" class="pair-value" placeholder="Value" value="${value || ""}">
+            <textarea class="pair-value" placeholder="Value" rows="2">${value || ""}</textarea>
             <button type="button" class="icon-btn remove-pair">Remove</button>
         `;
         row.querySelector(".remove-pair").addEventListener("click", function () {
@@ -230,14 +230,14 @@
                     </div>
 
                     <div class="split">
-                        <div>
+                        <div class="hook-section">
                             <div class="split-head">
                                 <h3>Headers</h3>
                                 <button type="button" id="add-header" class="small-btn">Add</button>
                             </div>
                             <div id="headers-rows"></div>
                         </div>
-                        <div>
+                        <div class="hook-section">
                             <div class="split-head">
                                 <h3>Body</h3>
                                 <button type="button" id="add-body" class="small-btn">Add</button>

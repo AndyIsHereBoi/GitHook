@@ -12,6 +12,7 @@
 body {
   min-height: 100vh;
   color: var(--text-main);
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 18% 12%, rgba(52, 103, 182, 0.18), transparent 38%),
     radial-gradient(circle at 82% 4%, rgba(47, 198, 162, 0.2), transparent 26%),
@@ -158,8 +159,16 @@ body {
 .split {
   display: grid;
   grid-template-columns: repeat(2, minmax(200px, 1fr));
-  gap: 16px;
-  margin-top: 8px;
+  gap: 24px;
+  margin-top: 14px;
+}
+
+.hook-section {
+  padding: 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  min-width: 0;
 }
 
 .split-head {
@@ -174,6 +183,24 @@ body {
   grid-template-columns: 1fr 1fr auto;
   gap: 10px;
   margin-bottom: 10px;
+  align-items: start;
+  min-width: 0;
+}
+
+.pair-name,
+.pair-value {
+  min-width: 0;
+}
+
+.pair-value {
+  resize: vertical;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.remove-pair {
+  align-self: center;
 }
 
 .actions {
