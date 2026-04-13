@@ -5,7 +5,9 @@
 	<meta charset="UTF-8">
 <link rel="icon" type="image/png" href="/assets/img/logo.png"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <% if (captchaEnabled) { %>
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <% } %>
 	<style>
 		body {
   font-family: Arial, sans-serif;
@@ -85,9 +87,11 @@ input[type="submit"]:hover {
 		<input type="email" id="email" name="email" required>
 		<label for="password">Password:</label>
 		<input type="password" id="password" name="password" required>
-		<div class="captcha-container">
-			<div class="g-recaptcha" data-sitekey="<%= recaptchaKey %>" data-theme="dark"></div>
-		</div>
+    <% if (captchaEnabled) { %>
+    <div class="captcha-container">
+      <div class="g-recaptcha" data-sitekey="<%= recaptchaKey %>" data-theme="dark"></div>
+    </div>
+    <% } %>
 		<input type="submit" value="Login">
 	</form>
 </body>

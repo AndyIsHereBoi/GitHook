@@ -1,0 +1,244 @@
+:root {
+  --surface-1: rgba(17, 21, 27, 0.95);
+  --surface-2: rgba(27, 33, 41, 0.88);
+  --border-soft: rgba(255, 255, 255, 0.09);
+  --text-main: #f5f7fb;
+  --text-muted: #9fa9bc;
+  --accent: #2fc6a2;
+  --accent-hover: #27b593;
+  --danger: #e36d6d;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--text-main);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(52, 103, 182, 0.18), transparent 38%),
+    radial-gradient(circle at 82% 4%, rgba(47, 198, 162, 0.2), transparent 26%),
+    linear-gradient(160deg, #0f1319 0%, #171e28 48%, #111722 100%);
+}
+
+#body {
+  padding: 0 24px 24px 24px;
+}
+
+#topnav {
+  margin-top: 8px;
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  background: linear-gradient(120deg, rgba(24, 31, 40, 0.96), rgba(18, 23, 31, 0.95));
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+}
+
+#spa-root {
+  margin-top: 22px;
+}
+
+.spa-view {
+  display: none;
+  animation: fadeIn 0.22s ease;
+}
+
+.spa-view.is-visible {
+  display: block;
+}
+
+.card {
+  background: linear-gradient(165deg, var(--surface-1), var(--surface-2));
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
+}
+
+.card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 14px;
+}
+
+.links-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.hooks-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hooks-table th,
+.hooks-table td {
+  text-align: left;
+  border-bottom: 1px solid var(--border-soft);
+  padding: 12px 8px;
+}
+
+.hooks-table th {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.small-btn,
+.icon-btn {
+  background: var(--accent);
+  border: none;
+  color: #0e1720;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.16s ease, background-color 0.16s ease;
+}
+
+.small-btn {
+  width: auto;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.92rem;
+}
+
+.icon-btn {
+  width: auto;
+  margin: 0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+}
+
+.small-btn:hover,
+.icon-btn:hover {
+  transform: translateY(-1px);
+  background: var(--accent-hover);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+}
+
+.info-item {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.info-item span {
+  display: block;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.form-row label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.form-row input,
+.form-row select,
+.pair-row input {
+  border: 1px solid var(--border-soft);
+  border-radius: 10px;
+  background: rgba(17, 22, 30, 0.9);
+  color: var(--text-main);
+  padding: 10px 11px;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.split-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.pair-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.actions {
+  margin-top: 14px;
+}
+
+.stats-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.stat-card p {
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.stat-card h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.loading,
+.empty-state,
+.error-state {
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft);
+  background: rgba(12, 18, 25, 0.75);
+}
+
+.error-state {
+  border-color: rgba(227, 109, 109, 0.55);
+  color: #ffd6d6;
+}
+
+a.is-active {
+  color: var(--accent) !important;
+}
+
+.navlinks a {
+  transition: color 0.16s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  #body {
+    padding: 0 12px 18px 12px;
+  }
+
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .pair-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -16,7 +16,6 @@ const {
     fetchHook,
     newHook,
     queryDB,
-    getHooks,
     fetchAllHooks,
 } = require('./functions');
 const app = express();
@@ -24,6 +23,10 @@ const app = express();
 
 process.on('uncaughtException', function (error) {
     console.log(error.stack);
+});
+
+process.on('unhandledRejection', function (reason) {
+    console.log('UnhandledPromiseRejection:', reason);
 });
 
 // events
@@ -46,19 +49,22 @@ app.get("/", async (req, res) => {
 
 app.get("/login", async (req, res) => {
     res.render("login", {
-        recaptchaKey: config.recaptcha.siteKey
+        recaptchaKey: config.recaptcha ? config.recaptcha.siteKey : "",
+        captchaEnabled: !!(config.recaptcha && config.recaptcha.enabled)
     });
 });
 
 app.get("/register", async (req, res) => {
     res.render("register", {
-        recaptchaKey: config.recaptcha.siteKey
+        recaptchaKey: config.recaptcha ? config.recaptcha.siteKey : "",
+        captchaEnabled: !!(config.recaptcha && config.recaptcha.enabled)
     });
 }); 
 
 app.get("/forgot-password", async (req, res) => {
     res.render("forgot-password", {
-        recaptchaKey: config.recaptcha.siteKey
+        recaptchaKey: config.recaptcha ? config.recaptcha.siteKey : "",
+        captchaEnabled: !!(config.recaptcha && config.recaptcha.enabled)
     });
 });
 
@@ -71,7 +77,7 @@ app.post("/login", verifyCaptchaMiddleware, async (req, res) => {
         if(req.query.path) {
             return res.redirect(req.query.path);
         } else {
-            return res.redirect("/dashboard/home");
+            return res.redirect("/dashboard/account");
         };
     } else return res.json({
         "success": false
@@ -90,7 +96,7 @@ app.post("/register", verifyCaptchaMiddleware, async (req, res) => {
     const session = await createSession(email, password);
     if(session.success) {
         res.cookie('login', `${session.cookie.cookie}`, { signed: true });
-        return res.redirect("/dashboard/home");
+        return res.redirect("/dashboard/account");
     } else return res.json({
         "success": false
     });
@@ -109,31 +115,38 @@ app.post("/forgot-password", verifyCaptchaMiddleware, async (req, res) => {
     };
 });
 
-app.get("/dashboard/account", loginRequiredMiddleware, async (req, res) => {
+async function renderDashboard(req, res) {
     const user = await fetchUser(req);
-    return res.render("dashboard_account", {
-        user: user
+    return res.render("dashboard", {
+        user: user,
+        initialRoute: req.path
     });
+}
+
+app.get("/dashboard/account", loginRequiredMiddleware, async (req, res) => {
+    return renderDashboard(req, res);
 });
 
 app.get("/dashboard/links", loginRequiredMiddleware, async (req, res) => {
-    const user = await fetchUser(req);
-    const hooks = await getHooks(user.usernumber);
-    return res.render("dashboard_links", {
-        user: user,
-        hookList: hooks
-    });
+    return renderDashboard(req, res);
+});
+
+app.get("/dashboard/status", loginRequiredMiddleware, async (req, res) => {
+    return renderDashboard(req, res);
 });
 
 app.get("/dashboard/hook/:hookId", loginRequiredMiddleware, async (req, res) => {
     const hookId = req.params.hookId;
     const hookData = await fetchHook(hookId);
     const user = await fetchUser(req);
+    if(!hookData) { return res.status(404).json({ "success": false, "error": "Not found" }); }
     
-    if(!user.usernumber == hookData.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
-    return res.render("dashboard_hook", {
-        user: user
-    })
+    if(user.usernumber !== hookData.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
+    return renderDashboard(req, res);
+});
+
+app.get("/dashboard", loginRequiredMiddleware, async (req, res) => {
+    return res.redirect("/dashboard/account");
 });
 
 
@@ -190,16 +203,27 @@ app.get("/api/gethook/:hookId", loginRequiredMiddleware, async (req, res) => {
     const hookId = req.params.hookId;
     const user = await fetchUser(req);
     const hookData = await fetchHook(hookId);
+    if(!hookData) { return res.status(404).json({ "success": false, "error": "Not found" }); }
     
-    if(!user.usernumber == hookData.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
+    if(user.usernumber !== hookData.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
     return res.json(hookData);
+});
+
+app.get("/api/me", loginRequiredMiddleware, async (req, res) => {
+    const user = await fetchUser(req);
+    return res.json({
+        usernumber: user.usernumber,
+        username: user.username,
+        email: user.email
+    });
 });
 
 
 app.post("/api/updatehook/:hookId", loginRequiredMiddleware, async (req, res) => {
     const user = await fetchUser(req);
     const hook = await fetchHook(req.params.hookId);
-    if(!user.usernumber == hook.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
+    if(!hook) { return res.status(404).json({ "success": false, "error": "Not found" }); }
+    if(user.usernumber !== hook.ownerNumber) { return res.status(401).json({ "success": false, "error": "Unauthorized" }); };
 
     try {
         const requestHeaders = JSON.stringify(req.body.headers);

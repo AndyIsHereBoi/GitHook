@@ -5,7 +5,9 @@
 <link rel="icon" type="image/png" href="/assets/img/logo.png"/>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<% if (captchaEnabled) { %>
 	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+	<% } %>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -97,9 +99,11 @@
 		<label for="confirm_password">Confirm Password:</label>
 		<input type="password" id="confirm_password" name="confirm_password" required>
 
+		<% if (captchaEnabled) { %>
 		<div class="captcha-container"><!-- Add captcha-container div wrapper -->
 			<div class="g-recaptcha" data-sitekey="<%= recaptchaKey %>" data-theme="dark"></div>
 		</div>
+		<% } %>
 		
 		<input type="submit" value="Register">
 	</form>

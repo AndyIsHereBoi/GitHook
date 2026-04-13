@@ -11,6 +11,7 @@
         "port": 3306
     },
     "recaptcha": {
+        "enabled": true,
         "siteKey": "",
         "secretKey": ""
     }

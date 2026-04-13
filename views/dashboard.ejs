@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHook - Dashboard</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo.png"/>
+    <link rel="stylesheet" href="/assets/css/index.css">
+    <link rel="stylesheet" href="/assets/css/spa.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.3.0/css/all.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper app-shell" data-initial-route="<%= initialRoute %>">
+        <div id="nav">
+            <div class="nav-logo">
+                <img src="/assets/img/logo.png" alt="GitHook logo">
+            </div>
+            <div class="navhr"></div>
+            <div class="links">
+                <li class="navlinks">
+                    <a href="/dashboard/account" data-route="/dashboard/account" data-nav="account">
+                        <i class="fa-thin fa-user"></i>
+                        <p class="navtxt">ACCOUNT</p>
+                    </a>
+                </li>
+                <li class="navlinks">
+                    <a href="/dashboard/links" data-route="/dashboard/links" data-nav="links">
+                        <i class="fa-thin fa-link"></i>
+                        <p class="navtxt">URL</p>
+                    </a>
+                </li>
+                <li class="navlinks">
+                    <a href="/dashboard/status" data-route="/dashboard/status" data-nav="status">
+                        <i class="fa-thin fa-cloud"></i>
+                        <p class="navtxt">STATUS</p>
+                    </a>
+                </li>
+            </div>
+        </div>
+
+        <div id="body">
+            <div id="topnav">
+                <div id="top-head">DASHBOARD</div>
+                <div id="top-user"><i class="fa-solid fa-user"></i> <span id="user-name"><%= user.username %></span></div>
+            </div>
+
+            <main id="spa-root">
+                <section id="view-account" class="spa-view">
+                    <div id="account-data"></div>
+                </section>
+
+                <section id="view-links" class="spa-view">
+                    <div id="links-data"></div>
+                </section>
+
+                <section id="view-status" class="spa-view">
+                    <div id="status-data"></div>
+                </section>
+
+                <section id="view-hook" class="spa-view">
+                    <div id="hook-data"></div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="/assets/js/spa.js"></script>
+</body>
+</html>

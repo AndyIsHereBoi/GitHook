@@ -3,7 +3,8 @@ const mysql = require('mysql');
 const { uuid } = require('uuidv4');
 const bcrypt = require ("bcrypt");
 const Recaptcha = require('google-recaptcha');
-const recaptcha = new Recaptcha({secret: config.recaptcha.secretKey});
+const captchaEnabled = !!(config.recaptcha && config.recaptcha.enabled);
+const recaptcha = captchaEnabled ? new Recaptcha({secret: config.recaptcha.secretKey}) : null;
 const mailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 const transporter = mailer.createTransport(smtpTransport(config.email));
@@ -164,26 +165,43 @@ async function fetchUser(req) {
 
 
 async function verifyCaptchaMiddleware(req, res, next) {
-    var invalidRedirectUrl;
-    console.log("req.path", req.path)
-    if(req.query.path) {
-        invalidRedirectUrl = `/${req.path}?error=Invalid Captcha&path=${req.query.path}`;
-        console.log("invalidRedirectUrl", invalidRedirectUrl)
-    } else {
-        invalidRedirectUrl = `/${req.path}`
-    };
+    if(!captchaEnabled) {
+        return next();
+    }
+
+    const currentPath = String(req.path || "/login").startsWith("/") ? String(req.path || "/login") : `/${String(req.path || "login")}`;
+    const redirectPath = req.query.path ? `&path=${encodeURIComponent(req.query.path)}` : "";
+    const invalidRedirectUrl = `${currentPath}?error=${encodeURIComponent("Invalid Captcha")}${redirectPath}`;
+
+    console.log("req.path", req.path);
+    console.log("invalidRedirectUrl", invalidRedirectUrl);
     const gResponse = req.body['g-recaptcha-response'];
     if(!gResponse) {
         console.log("no gResponse")
         return res.redirect(invalidRedirectUrl)
     };
-    recaptcha.verify({response: gResponse}, (error) => {
-        if (error) {
-            console.log("error", error)
-            return res.redirect(invalidRedirectUrl)
-        };
-    });
-    return next();
+
+    try {
+        // Guard against third-party latency so requests fail fast instead of hanging.
+        await Promise.race([
+            new Promise((resolve, reject) => {
+                recaptcha.verify({response: gResponse}, (error) => {
+                    if (error) {
+                        return reject(error);
+                    }
+                    return resolve(true);
+                });
+            }),
+            new Promise((_, reject) => {
+                setTimeout(() => reject(new Error("Captcha verification timeout")), 7000);
+            })
+        ]);
+
+        return next();
+    } catch (error) {
+        console.log("captcha verify error", error);
+        return res.redirect(invalidRedirectUrl);
+    }
 };
 
 
