@@ -121,7 +121,7 @@
                             <th>Name</th>
                             <th>Last Changed</th>
                             <th>Runs</th>
-                            <th>Edit</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -134,7 +134,12 @@
                         <td>${hook.customName || "Unnamed hook"}</td>
                         <td>${formatDate(hook.lastEditedAt)}</td>
                         <td>${hook.timesRan || 0}</td>
-                        <td><button type="button" class="small-btn edit-hook-btn" data-hook-id="${hook.hookId}">Edit</button></td>
+                        <td class="actions-cell">
+                            <button type="button" class="small-btn edit-hook-btn" data-hook-id="${hook.hookId}">Edit</button>
+                            <button type="button" class="small-btn delete-hook-btn" data-hook-id="${hook.hookId}" data-hook-name="${hook.customName || "Unnamed hook"}">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -162,6 +167,34 @@
                 button.addEventListener("click", function () {
                     const hookId = button.getAttribute("data-hook-id");
                     navigate("/dashboard/hook/" + hookId);
+                });
+            });
+
+            container.querySelectorAll(".delete-hook-btn").forEach((button) => {
+                button.addEventListener("click", async function () {
+                    const hookId = button.getAttribute("data-hook-id");
+                    const hookName = button.getAttribute("data-hook-name") || "this hook";
+                    const confirmed = window.confirm("Delete \"" + hookName + "\"? This cannot be undone.");
+                    if (!confirmed) {
+                        return;
+                    }
+
+                    button.disabled = true;
+                    try {
+                        const result = await fetchJson("/api/deletehook/" + hookId, {
+                            method: "POST"
+                        });
+
+                        if (result && result.success) {
+                            await renderLinks();
+                        } else {
+                            alert("Failed to delete hook.");
+                            button.disabled = false;
+                        }
+                    } catch (error) {
+                        alert("Failed to delete hook.");
+                        button.disabled = false;
+                    }
                 });
             });
         } catch (error) {

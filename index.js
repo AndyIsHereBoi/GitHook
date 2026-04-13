@@ -331,6 +331,31 @@ app.get("/api/getallhooks", loginRequiredMiddleware, async (req, res) => {
     return res.json(allHooks);
 });
 
+app.post("/api/deletehook/:hookId", loginRequiredMiddleware, async (req, res) => {
+    const hookId = req.params.hookId;
+    const user = await fetchUser(req);
+    const hook = await fetchHook(hookId);
+
+    if(!hook) {
+        return res.status(404).json({
+            "success": false,
+            "error": "Not found"
+        });
+    }
+
+    if(user.usernumber !== hook.ownerNumber) {
+        return res.status(401).json({
+            "success": false,
+            "error": "Unauthorized"
+        });
+    }
+
+    const result = await queryDB("DELETE FROM hooks WHERE hookId = ? AND ownerNumber = ?", [hookId, user.usernumber]);
+    return res.json({
+        "success": result.affectedRows > 0
+    });
+});
+
 app.use((req, res) => {
     return sendErrorResponse(req, res, 404, "Page not found.");
 });

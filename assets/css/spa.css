@@ -114,6 +114,23 @@ body {
   background: var(--accent-hover);
 }
 
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.delete-hook-btn {
+  background: #d9534f;
+  color: #fff;
+  min-width: 42px;
+  padding: 10px 12px;
+}
+
+.delete-hook-btn:hover {
+  background: #c74843;
+}
+
 .info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
