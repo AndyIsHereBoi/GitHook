@@ -223,18 +223,20 @@
             container.innerHTML = `
                 <form id="hook-form" class="card">
                     <h2>Hook Editor</h2>
-                    <div class="form-row">
-                        <label for="hook-method">Method</label>
-                        <select id="hook-method">
-                            <option value="post">POST</option>
-                            <option value="get">GET</option>
-                            <option value="patch">PATCH</option>
-                            <option value="delete">DELETE</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <label for="hook-name">Name</label>
-                        <input id="hook-name" type="text" placeholder="Hook name">
+                    <div class="hook-top-row">
+                        <div class="form-row">
+                            <label for="hook-name">Name</label>
+                            <input id="hook-name" type="text" placeholder="Hook name">
+                        </div>
+                        <div class="form-row method-row">
+                            <label for="hook-method">Method</label>
+                            <select id="hook-method">
+                                <option value="post">POST</option>
+                                <option value="get">GET</option>
+                                <option value="patch">PATCH</option>
+                                <option value="delete">DELETE</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-row">
                         <label for="hook-url">URL</label>

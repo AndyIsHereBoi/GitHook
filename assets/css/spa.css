@@ -146,6 +146,16 @@ body {
   margin-bottom: 6px;
 }
 
+.hook-top-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px;
+  gap: 12px;
+}
+
+.method-row {
+  min-width: 0;
+}
+
 .form-row input,
 .form-row select,
 .form-row textarea,
@@ -266,6 +276,10 @@ a.is-active {
   }
 
   .split {
+    grid-template-columns: 1fr;
+  }
+
+  .hook-top-row {
     grid-template-columns: 1fr;
   }
 
