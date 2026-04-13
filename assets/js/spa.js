@@ -10,6 +10,69 @@
 
     const emptyState = "<p class=\"empty-state\">No data yet.</p>";
 
+    function getPublicBaseUrl() {
+        const configuredDomain = appShell ? String(appShell.getAttribute("data-public-domain") || "").trim() : "";
+        if (!configuredDomain) {
+            return window.location.origin;
+        }
+        if (configuredDomain.startsWith("http://") || configuredDomain.startsWith("https://")) {
+            return configuredDomain.replace(/\/+$/, "");
+        }
+        return ("https://" + configuredDomain).replace(/\/+$/, "");
+    }
+
+    function showNewHookHelpPopup(hookId) {
+        const baseUrl = getPublicBaseUrl();
+        const hookUrl = baseUrl + "/hook/" + hookId;
+        const popup = document.createElement("div");
+        popup.className = "hook-popup-overlay";
+        popup.innerHTML = `
+            <div class="hook-popup" role="dialog" aria-modal="true" aria-label="New hook setup instructions">
+                <h3>Hook Created</h3>
+                <p>Use this webhook URL in GitHub Webhooks:</p>
+                <code>${hookUrl}</code>
+                <ol>
+                    <li>Open your GitHub repository Settings, then Webhooks.</li>
+                    <li>Click Add webhook and paste the URL above as the Payload URL.</li>
+                    <li>Set content type to application/json.</li>
+                    <li>Select push events and save.</li>
+                </ol>
+                <div class="hook-popup-actions">
+                    <button type="button" class="small-btn" id="copy-hook-url">Copy URL</button>
+                    <button type="button" class="small-btn" id="open-hook-editor">Open Editor</button>
+                    <button type="button" class="small-btn" id="close-hook-popup">Close</button>
+                </div>
+            </div>
+        `;
+
+        const closePopup = function () {
+            popup.remove();
+        };
+
+        popup.querySelector("#copy-hook-url").addEventListener("click", async function () {
+            try {
+                await navigator.clipboard.writeText(hookUrl);
+                alert("Webhook URL copied.");
+            } catch (error) {
+                alert("Copy failed. Please copy it manually.");
+            }
+        });
+
+        popup.querySelector("#open-hook-editor").addEventListener("click", function () {
+            closePopup();
+            navigate("/dashboard/hook/" + hookId);
+        });
+
+        popup.querySelector("#close-hook-popup").addEventListener("click", closePopup);
+        popup.addEventListener("click", function (event) {
+            if (event.target === popup) {
+                closePopup();
+            }
+        });
+
+        document.body.appendChild(popup);
+    }
+
     function safeJsonParse(value, fallback) {
         try {
             return JSON.parse(value);
@@ -153,7 +216,7 @@
                     try {
                         const result = await fetchJson("/dashboard/newhook", { method: "POST" });
                         if (result && result.success && result.hook) {
-                            navigate("/dashboard/hook/" + result.hook);
+                            showNewHookHelpPopup(result.hook);
                         }
                     } catch (error) {
                         alert("Could not create a new hook right now.");

@@ -169,7 +169,8 @@ async function renderDashboard(req, res) {
     const user = await fetchUser(req);
     return res.render("dashboard", {
         user: user,
-        initialRoute: req.path
+        initialRoute: req.path,
+        publicDomain: config.publicDomain || ""
     });
 }
 
