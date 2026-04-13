@@ -206,6 +206,8 @@ body {
 }
 
 .pair-value {
+  box-sizing: border-box;
+  line-height: 1.4;
   resize: none;
   overflow-y: hidden;
   overflow-wrap: anywhere;

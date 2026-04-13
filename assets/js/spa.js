@@ -180,8 +180,8 @@
 
         const valueField = row.querySelector(".pair-value");
         const autoResize = function () {
-            valueField.style.height = "auto";
-            valueField.style.height = valueField.scrollHeight + "px";
+            valueField.style.height = "0px";
+            valueField.style.height = valueField.scrollHeight + 4 + "px";
         };
 
         valueField.addEventListener("input", autoResize);
