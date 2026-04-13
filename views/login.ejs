@@ -71,6 +71,25 @@ input[type="submit"]:hover {
   color: #fff;
 }
 
+.register-btn {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 10px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.register-btn:hover {
+  background-color: #fff;
+  color: #111;
+}
+
 .g-recaptcha {
   display: inline-block;
   text-align: center;
@@ -93,6 +112,7 @@ input[type="submit"]:hover {
     </div>
     <% } %>
 		<input type="submit" value="Login">
+    <a class="register-btn" href="/register">Create Account</a>
 	</form>
 </body>
 </html>
